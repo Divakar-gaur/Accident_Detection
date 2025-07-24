@@ -33,8 +33,10 @@ socketio = SocketIO(app, cors_allowed_origins="http://0.0.0.0:5001")
 
 app.secret_key = secrets.token_hex(16)
 
+
+# ...add your own database here...
 # client = pymongo.MongoClient("mongodb://localhost:27017/")
-client = pymongo.MongoClient("mongodb+srv://Scott:lion@smartafs-cluster.3r3dd80.mongodb.net/")
+# client = pymongo.MongoClient("mongodb+srv://Scott:lion@smartafs-cluster.3r0.mob.net/")
 db = client["SmartAFS"]
 users_collection = db["users"]
 collection = db["alerts"]
