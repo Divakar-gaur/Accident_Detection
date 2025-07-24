@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Sign Up | GuardianEye</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="../static/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="../static/css/app.min.css" rel="stylesheet" type="text/css">
+
+    <style>
+        .is-invalid {
+            border-color: red;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="auth-page-wrapper pt-5">
+        <div class="auth-one-bg-position auth-one-bg" id="auth-particles">
+            <div class="bg-overlay"></div>
+            <div class="shape">
+                <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink"
+                    viewBox="0 0 1440 120">
+                    <path d="M 0,36 C 144,53.6 432,123.2 720,124 C 1008,124.8 1296,56.8 1440,40L1440 140L0 140z"></path>
+                </svg>
+            </div>
+        </div>
+
+        <div class="auth-page-content">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="text-center mt-sm-5 mb-4 text-white-50">
+                            <h1 style="color: white; font-size: 40px;"><b>GuardianEye</b></h1>
+                            <h5 style="color: white;">Real Time Crash and Fire Detection System</h5>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div class="row justify-content-center">
+                    <div class="col-md-8 col-lg-6 col-xl-5">
+                        <div class="card mt-4 card-bg-fill">
+                            <div class="card-body p-4">
+                                <div class="text-center mt-2">
+                                    <h5 class="text-primary">Get started now!</h5>
+                                    <p class="text-muted">Signup to continue to GuardianEye.</p>
+                                </div>
+                                <!-- Display Error Message if any -->
+                                {% if error %}
+                                <div class="alert alert-danger" role="alert">
+                                    {{ error }}
+                                </div>
+                                {% endif %}
+                                <div class="p-2 mt-4">
+                                    <form method="POST" action="/signup">
+
+
+                                        <!-- Email Field -->
+                                        <div class="mb-3">
+                                            <label for="email" class="form-label">Email <span
+                                                    class="text-danger">*</span></label>
+                                            <input type="email" name="email" id="email"
+                                                class="form-control {% if error %}is-invalid{% endif %}"
+                                                placeholder="Enter email address" required>
+                                            <div class="invalid-feedback">Please enter email</div>
+                                        </div>
+
+                                        <!-- Username Field -->
+                                        <div class="mb-3">
+                                            <label for="username" class="form-label">Username <span
+                                                    class="text-danger">*</span></label>
+                                            <input type="text" name="username" id="username"
+                                                class="form-control {% if error %}is-invalid{% endif %}"
+                                                placeholder="Enter username" required>
+                                            <div class="invalid-feedback">Please enter username</div>
+                                        </div>
+
+                                        <!-- Password Field -->
+                                        <div class="mb-3">
+                                            <label for="password" class="form-label">Password <span
+                                                    class="text-danger">*</span></label>
+                                            <input type="password" name="password" id="password"
+                                                class="form-control {% if error %}is-invalid{% endif %}"
+                                                placeholder="Enter password" required>
+                                            <div class="invalid-feedback">Please enter password</div>
+                                        </div>
+
+                                        <!-- Confirm Password Field -->
+                                        <div class="mb-3">
+                                            <label for="confirm_password" class="form-label">Confirm Password <span
+                                                    class="text-danger">*</span></label>
+                                            <input type="password" name="confirm_password" id="confirm_password"
+                                                class="form-control {% if error %}is-invalid{% endif %}"
+                                                placeholder="Confirm password" required>
+                                            <div class="invalid-feedback">Please confirm your password</div>
+                                        </div>
+
+                                        <!-- Submit Button -->
+                                        <div class="mt-4">
+                                            <button type="submit" class="btn btn-success w-100">Sign Up</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-4 text-center">
+                            <p class="mb-0">Already have an account? <a href="/signin"
+                                    class="fw-semibold text-primary text-decoration-underline"> Sign In </a> </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer class="footer">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="text-center">
+                            <p class="mb-0 text-muted">&copy; <script>document.write(new Date().getFullYear())</script> GuardianEye <i class="mdi mdi-heart text-danger"></i></p>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="../static/js/signup.js"></script>
+</body>
+
+</html>

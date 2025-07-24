@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GuardianEye Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet" />
+  <link href="../static/css/dashboard.css" rel="stylesheet" type="text/css">
+  <script src="https://cdn.socket.io/4.5.4/socket.io.min.js" integrity="sha384-..." crossorigin="anonymous"></script>
+
+</head>
+
+<body>
+  <div class="sidebar">
+    <div class="logo">GuardianEye</div>
+    <div class="menu-title">MENU</div>
+    <nav class="nav flex-column">
+      <a class="nav-link active" href="#"><i class="fas fa-columns"></i> <span>Dashboard</span></a>
+      <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#videoModal">
+        <i class="fas fa-video"></i> <span>Video mode</span>
+      </a>
+
+      <a class="nav-link" href="/alerts"><i class="fas fa-exclamation-triangle"></i> <span>Alerts</span></a>
+      <a class="nav-link" href="#"><i class="fas fa-bell"></i> <span>Notification</span></a>
+      <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#profileModal">
+        <i class="fas fa-user"></i> <span>User Profile</span>
+      </a>
+
+      <a class="nav-link" href="#"><i class="fas fa-info-circle"></i> <span>About Product</span></a>
+      <a class="nav-link" href="#"><i class="fas fa-phone"></i> <span>Contact Us</span></a>
+      <a class="nav-link" href="#"><i class="fas fa-cog"></i> <span>Settings</span></a>
+      <a class="nav-link" href="/logout">
+        <i class="fas fa-sign-out-alt"></i> <span>Sign Out</span>
+      </a>
+
+    </nav>
+  </div>
+
+  <div class="main">
+    <div class="topbar">
+      <div class="vertical-menu-btn" onclick="toggleSidebar()">
+        <i class="fas fa-bars"></i>
+      </div>
+      <div>
+        <h5>Guardian Eye!</h5>
+        <p class="text-muted">Here's what's happening with your place.</p>
+      </div>
+      <div class="header-right">
+        <div class="theme-toggle" onclick="toggleTheme()" title="Toggle Light/Dark Mode">
+          <i class="fas fa-adjust fa-lg"></i>
+        </div>
+        <div class="fullscreen-toggle" onclick="toggleFullscreen()" title="Toggle Fullscreen">
+          <i class="fas fa-expand fa-lg"></i>
+        </div>
+        <div class="date-picker">
+          <input type="text" id="datetimeRange" class="form-control" placeholder="Select date & time range">
+          <button class="btn btn-outline-secondary"><i class="fas fa-calendar"></i></button>
+        </div>
+        <button class="btn btn-danger"><i class="fas fa-bug"></i> Report Alert</button>
+        <a href="your-target-link.html" class="user-box" style="text-decoration: none; color: inherit;">
+          <img src="../static/images/user.png" alt="User" />
+          <div>
+
+            <div>{{ user }}</div>
+
+          </div>
+        </a>
+
+      </div>
+    </div>
+
+    <div class="row g-4 mb-4">
+      <div class="col-md-3">
+        <div class="card-box">
+          <small>Today</small>
+          <h6>Total Crashes Detected</h6>
+          <i class="fas fa-car-crash fa-2x"></i>
+          <!-- Crashes -->
+          <h4 class="mt-2" id="crashCount">0</h4>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card-box">
+          <small>Today</small>
+          <h6>Total Fires Detected</h6>
+          <i class="fas fa-fire fa-2x"></i>
+          <!-- Fires -->
+          <h4 class="mt-2" id="fireCount">0</h4>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card-box">
+          <small>Today</small>
+          <h6>Total Smoke Detected</h6>
+          <i class="fas fa-smog fa-2x"></i>
+
+          <!-- Smoke -->
+          <h4 class="mt-2" id="smokeCount">0</h4>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card-box" style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#videoModal">
+          <small>Today</small>
+          <h6>Active Video</h6>
+          <i class="fas fa-video fa-2x"></i>
+          <h6 class="mt-2"> view mode</h6>
+        </div>
+
+      </div>
+    </div>
+
+
+    <div class="container-fluid px-2">
+      <div class="row">
+        <!-- Video Section: 11 columns now for more width -->
+        <div class="col-xl-9 pe-2">
+          <div class="container-video">
+            <!-- Card -->
+            <div class="card">
+              <div class="card-header border-0 align-items-center d-flex">
+                <h4 class="card-title mb-0 flex-grow-1">Selected</h4>
+                <div>
+                  <button type="button" class="btn btn-soft-secondary btn-sm btn-hover"
+                    onclick="startWebcam()">Camera</button>
+
+
+                  <!-- Upload Form and Button -->
+                  <form id="uploadForm" enctype="multipart/form-data" style="display: none;">
+                    <input type="file" id="videoInput" name="video" accept="video/*" onchange="uploadVideo()" />
+                  </form>
+
+                  <button type="button" class="btn btn-soft-secondary btn-sm btn-hover"
+                    onclick="document.getElementById('videoInput').click()">Video</button>
+                </div>
+              </div>
+
+              <!-- Responsive Video Container: Adjusts to video aspect ratio -->
+              <div class="video-container p-3">
+                <div class="ratio ratio-16x9" style="min-height: 300px;">
+                  <!-- Example for responsive video (can replace with your actual video source) -->
+                  <iframe src="{{ url_for('video_feed') }}" style="width: 100%; height: 90vh; border: none; object-fit: cover;"
+                    allow="autoplay; encrypted-media" allowfullscreen>
+                  </iframe>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Activity Box: Now 1 column, slightly narrower -->
+        <div class="col-xl-3 ps-1">
+          <div class="card activity-box px-2">
+            <div class="card-header">
+              <h6 class="mb-0">Recent Activity</h6>
+            </div>
+            <div class="card-body">
+              <div class="card-body" id="activityFeed" style="max-height: 350px; overflow-y: auto;">
+                <!-- Activity will be added here by JS -->
+              </div>
+
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+  <!-- Video Fullscreen Modal -->
+  <div class="modal fade" id="videoModal" tabindex="-1" aria-labelledby="videoModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="videoModalLabel">Live Feed - Fullscreen</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body p-0">
+          <div class="ratio ratio-16x9" style="min-height: 60vh;">
+            <iframe src="{{ url_for('video_feed') }}" style="width: 100%; height: 100%; border: none; object-fit: cover;" 
+      allowfullscreen></iframe>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- User Profile Modal -->
+  <div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="profileModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="profileModalLabel">User Profile</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body text-center">
+          <img src="../static/images/user.png" alt="User Icon" class="rounded-circle mb-3" width="100" height="100">
+          <h5>{{ user }}</h5> <!-- Username here -->
+          <p class="text-muted">{{ email }}</p> <!-- Email here -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <script src="../static/js/dashboard.js"></script>
+  <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+</body>
+
+</html>
+
+<!-- video is not proper contain the video container -->
